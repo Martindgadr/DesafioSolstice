@@ -1,3 +1,7 @@
 <resources>
-    <string name="app_name">Desafio Solstice</string>
+    <string name="app_name">Solstice Challenge</string>
+    <string name="loadingText">Loading...</string>
+    <string name="errorService">Error getting contact list from server, Please verify Internet connection.</string>
+    <string name="mainActivityTitle">Contacts</string>
+    <string name="favoriteTitle">FAVORITE CONTACTS</string>
 </resources>

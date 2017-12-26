@@ -21,12 +21,12 @@ import butterknife.ButterKnife;
  * Created by Martin De Girolamo on 17/12/2017.
  */
 
-public class MainReciclerViewAdapter extends RecyclerView.Adapter<MainReciclerViewAdapter.ViewHolder>{
+public class MainRecyclerViewAdapter extends RecyclerView.Adapter<MainRecyclerViewAdapter.ViewHolder>{
     private LayoutInflater layoutInflater;
     private List<PhoneBook> phoneBookList;
     private Context context;
 
-    public MainReciclerViewAdapter(Context context, LayoutInflater layoutInflater) {
+    public MainRecyclerViewAdapter(Context context, LayoutInflater layoutInflater) {
         this.layoutInflater = layoutInflater;
         this.context = context;
 

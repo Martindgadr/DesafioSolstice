@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,9 +12,9 @@ import android.support.v7.widget.RecyclerView;
 
 import com.test.ionnt.desafiosolstice.R;
 import com.test.ionnt.desafiosolstice.database.PhoneBook;
-import com.test.ionnt.desafiosolstice.ui.phone_book.adapter.MainReciclerViewAdapter;
+import com.test.ionnt.desafiosolstice.ui.phone_book.adapter.MainRecyclerViewAdapter;
 import com.test.ionnt.desafiosolstice.ui.phone_book.viewmodel.MainActivityViewModel;
-import com.test.ionnt.desafiosolstice.utils.sort.SortByFavourite;
+import com.test.ionnt.desafiosolstice.utils.sort.SortPhoneBookList;
 
 import java.util.Collections;
 import java.util.List;
@@ -25,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.phoneBookRecyclerView) RecyclerView recyclerView;
 
     private MainActivityViewModel viewModel;
-    private MainReciclerViewAdapter adapter;
+    private MainRecyclerViewAdapter adapter;
     private ProgressDialog progressDialog;
 
     @Override
@@ -35,9 +36,11 @@ public class MainActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
-        adapter = new MainReciclerViewAdapter(this, this.getLayoutInflater());
+        adapter = new MainRecyclerViewAdapter(this, this.getLayoutInflater());
         viewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);
         progressDialog = new ProgressDialog(this);
+
+        setActionBarTitle();
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -51,36 +54,41 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
         viewModel.getShowErrorMessage().observe(this, this::serviceErrorMessage);
         viewModel.getShowHideLoadingImage().observe(this, this::showHideProgressDialog);
-        viewModel.getShowPhoneBook().observe(this, this::showPhonebookList);
+        viewModel.getShowPhoneBook().observe(this, this::showPhoneBookList);
     }
 
     private void showHideProgressDialog(Boolean hasToShow) {
         if (hasToShow){
-            progressDialog.setMessage("Loading...");
+            progressDialog.setMessage(getString(R.string.loadingText));
             progressDialog.show();
         } else {
             progressDialog.hide();
         }
     }
 
-    private void showPhonebookList(List<PhoneBook> phoneBookList) {
+    private void showPhoneBookList(List<PhoneBook> phoneBookList) {
         if (phoneBookList != null) {
-            sortPhonebookList(phoneBookList);
+            sortPhoneBookList(phoneBookList);
             adapter.addContactList(phoneBookList);
         }
     }
 
-    private void sortPhonebookList(List<PhoneBook> phoneBookList) {
+    private void sortPhoneBookList(List<PhoneBook> phoneBookList) {
         if (!phoneBookList.isEmpty()){
-            Collections.sort(phoneBookList, new SortByFavourite());
-//            Collections.sort(phoneBookList, new SortByName());
+            Collections.sort(phoneBookList, new SortPhoneBookList());
         }
     }
 
     private void serviceErrorMessage(Boolean serviceHasError) {
         if (serviceHasError){
-            Snackbar.make(recyclerView, "Error", Snackbar.LENGTH_LONG);
+            Snackbar.make(recyclerView, R.string.errorService, Snackbar.LENGTH_LONG);
         }
     }
 
+    private void setActionBarTitle() {
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+            getSupportActionBar().setCustomView(R.layout.activity_main_title);
+        }
+    }
 }

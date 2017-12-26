@@ -50,19 +50,19 @@ public class MainActivityViewModel extends ViewModel {
                 .subscribeOn(Schedulers.io())
                 .subscribe(this::handleResponse,this::handleError));
 
-        showHideLoadingImage.setValue(true);
+        setShowHideLoadingImage(true);
     }
 
     private void handleResponse(List<PhoneBook> phoneBookList) {
         // Send all data to Adapter.
         setShowPhoneBook(phoneBookList);
-        showHideLoadingImage.setValue(false);
+        setShowHideLoadingImage(false);
     }
 
     private void handleError(Throwable error) {
         // show error on screen.
         showErrorMessage.setValue(true);
-        showHideLoadingImage.setValue(false);
+        setShowHideLoadingImage(false);
     }
 
     public MutableLiveData<Boolean> getShowErrorMessage() {
