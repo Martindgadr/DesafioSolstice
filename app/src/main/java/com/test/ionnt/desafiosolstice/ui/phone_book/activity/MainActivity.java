@@ -9,20 +9,23 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.widget.Toast;
 
 import com.test.ionnt.desafiosolstice.R;
 import com.test.ionnt.desafiosolstice.database.PhoneBook;
 import com.test.ionnt.desafiosolstice.ui.phone_book.adapter.MainRecyclerViewAdapter;
+import com.test.ionnt.desafiosolstice.ui.phone_book.adapter.callback.Callback;
 import com.test.ionnt.desafiosolstice.ui.phone_book.viewmodel.MainActivityViewModel;
 import com.test.ionnt.desafiosolstice.utils.sort.SortPhoneBookList;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements Callback {
     @BindView(R.id.phoneBookRecyclerView) RecyclerView recyclerView;
 
     private MainActivityViewModel viewModel;
@@ -36,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
-        adapter = new MainRecyclerViewAdapter(this, this.getLayoutInflater());
+        adapter = new MainRecyclerViewAdapter(this, this.getLayoutInflater(), this);
         viewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);
         progressDialog = new ProgressDialog(this);
 
@@ -69,8 +72,27 @@ public class MainActivity extends AppCompatActivity {
     private void showPhoneBookList(List<PhoneBook> phoneBookList) {
         if (phoneBookList != null) {
             sortPhoneBookList(phoneBookList);
-            adapter.addContactList(phoneBookList);
+            adapter.addContactList(addHeadersList(phoneBookList));
         }
+    }
+
+    private List<Object> addHeadersList(List<PhoneBook> phoneBookList) {
+        List<Object> items = new ArrayList<>();
+        boolean favoriteHeader = false, otherHeader = false;
+
+        for (PhoneBook phoneBook : phoneBookList){
+            if (phoneBook.getIsFavorite() && !favoriteHeader) {
+                items.add(getString(R.string.favoriteTitle));
+                favoriteHeader = true;
+            } else if(!phoneBook.getIsFavorite() && !otherHeader) {
+                items.add(getString(R.string.otherContactsTitle));
+                otherHeader = true;
+            }
+
+            items.add(phoneBook);
+        }
+
+        return items;
     }
 
     private void sortPhoneBookList(List<PhoneBook> phoneBookList) {
@@ -90,5 +112,10 @@ public class MainActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
             getSupportActionBar().setCustomView(R.layout.activity_main_title);
         }
+    }
+
+    @Override
+    public void onItemClicked(PhoneBook phoneBook) {
+        Toast.makeText(this, "Se clickeo item: " + phoneBook.getName(), Toast.LENGTH_SHORT).show();
     }
 }

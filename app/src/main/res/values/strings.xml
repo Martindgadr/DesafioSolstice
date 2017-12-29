@@ -4,4 +4,5 @@
     <string name="errorService">Error getting contact list from server, Please verify Internet connection.</string>
     <string name="mainActivityTitle">Contacts</string>
     <string name="favoriteTitle">FAVORITE CONTACTS</string>
+    <string name="otherContactsTitle">OTHER CONTACTS</string>
 </resources>

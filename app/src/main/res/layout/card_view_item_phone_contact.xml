@@ -50,7 +50,7 @@
         app:layout_constraintTop_toTopOf="@+id/contactImage" />
 
     <TextView
-        android:id="@+id/deacriptionText"
+        android:id="@+id/descriptionText"
         android:layout_width="0dp"
         android:layout_height="23dp"
         android:layout_marginBottom="8dp"
