@@ -58,7 +58,6 @@ public class MainRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.V
         if (holder instanceof ContactViewHolder) {
             ((ContactViewHolder) holder).bindContact((PhoneBook) item);
         }
-
     }
 
     @Override
@@ -67,6 +66,9 @@ public class MainRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.V
     }
 
     public void addContactList(List<Object> items) {
+        if (this.items != null && !this.items.isEmpty()) {
+            this.items.clear();
+        }
         this.items = items;
         notifyDataSetChanged();
     }

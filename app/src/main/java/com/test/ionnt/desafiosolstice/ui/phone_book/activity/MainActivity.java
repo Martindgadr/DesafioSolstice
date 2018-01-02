@@ -2,6 +2,7 @@ package com.test.ionnt.desafiosolstice.ui.phone_book.activity;
 
 import android.app.ProgressDialog;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
@@ -9,13 +10,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.widget.Toast;
 
 import com.test.ionnt.desafiosolstice.R;
 import com.test.ionnt.desafiosolstice.database.PhoneBook;
 import com.test.ionnt.desafiosolstice.ui.phone_book.adapter.MainRecyclerViewAdapter;
 import com.test.ionnt.desafiosolstice.ui.phone_book.adapter.callback.Callback;
 import com.test.ionnt.desafiosolstice.ui.phone_book.viewmodel.MainActivityViewModel;
+import com.test.ionnt.desafiosolstice.ui.phone_book_detail.activity.PhoneBookDetails;
+import com.test.ionnt.desafiosolstice.utils.Constants;
 import com.test.ionnt.desafiosolstice.utils.sort.SortPhoneBookList;
 
 import java.util.ArrayList;
@@ -31,6 +33,7 @@ public class MainActivity extends AppCompatActivity implements Callback {
     private MainActivityViewModel viewModel;
     private MainRecyclerViewAdapter adapter;
     private ProgressDialog progressDialog;
+    private List<PhoneBook> phoneBookList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +45,7 @@ public class MainActivity extends AppCompatActivity implements Callback {
         adapter = new MainRecyclerViewAdapter(this, this.getLayoutInflater(), this);
         viewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);
         progressDialog = new ProgressDialog(this);
+        phoneBookList = new ArrayList<>();
 
         setActionBarTitle();
 
@@ -71,6 +75,7 @@ public class MainActivity extends AppCompatActivity implements Callback {
 
     private void showPhoneBookList(List<PhoneBook> phoneBookList) {
         if (phoneBookList != null) {
+            this.phoneBookList = phoneBookList;
             sortPhoneBookList(phoneBookList);
             adapter.addContactList(addHeadersList(phoneBookList));
         }
@@ -116,6 +121,27 @@ public class MainActivity extends AppCompatActivity implements Callback {
 
     @Override
     public void onItemClicked(PhoneBook phoneBook) {
-        Toast.makeText(this, "Se clickeo item: " + phoneBook.getName(), Toast.LENGTH_SHORT).show();
+        Intent detailIntent = new Intent(this, PhoneBookDetails.class);
+        detailIntent.putExtra(Constants.PHONEBOOK_REF, phoneBook);
+        startActivityForResult(detailIntent, Constants.DETAILACTIVITY);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == RESULT_OK && requestCode == Constants.DETAILACTIVITY) {
+            if (data != null) {
+                PhoneBook phoneBook = (PhoneBook) data.getSerializableExtra(Constants.PHONEBOOK_REF);
+
+                for (int i=0; i<phoneBookList.size(); i++){
+                    if (phoneBookList.get(i).getId().equals(phoneBook.getId())){
+                        this.phoneBookList.set(i, phoneBook);
+                    }
+                }
+                showPhoneBookList(this.phoneBookList);
+            }
+        }
+
     }
 }

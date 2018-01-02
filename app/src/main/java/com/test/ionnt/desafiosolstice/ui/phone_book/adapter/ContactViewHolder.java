@@ -38,6 +38,7 @@ public class ContactViewHolder extends RecyclerView.ViewHolder implements View.O
 
     public void bindContact(PhoneBook phoneBookContact) {
         this.phoneBookContact = phoneBookContact;
+
         contactName.setText(phoneBookContact.getName());
 
         Picasso.with(context)

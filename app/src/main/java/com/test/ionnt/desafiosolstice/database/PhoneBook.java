@@ -1,11 +1,11 @@
 
 package com.test.ionnt.desafiosolstice.database;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class PhoneBook {
-
+public class PhoneBook implements Serializable {
     private String name;
     private String id;
     private String companyName;
@@ -17,6 +17,22 @@ public class PhoneBook {
     private Phone phone;
     private Address address;
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+
+    public PhoneBook(String name, String id, String companyName, Boolean isFavorite,
+                     String smallImageURL, String largeImageURL, String emailAddress, String birthdate,
+                     Phone phone, Address address, Map<String, Object> additionalProperties) {
+        this.name = name;
+        this.id = id;
+        this.companyName = companyName;
+        this.isFavorite = isFavorite;
+        this.smallImageURL = smallImageURL;
+        this.largeImageURL = largeImageURL;
+        this.emailAddress = emailAddress;
+        this.birthdate = birthdate;
+        this.phone = phone;
+        this.address = address;
+        this.additionalProperties = additionalProperties;
+    }
 
     public String getName() {
         return name;

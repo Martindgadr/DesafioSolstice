@@ -56,15 +56,15 @@ public class CustomItemView extends ConstraintLayout {
         }
     }
 
-    public void setTitleText(TextView titleText) {
-        this.titleText = titleText;
+    public void setTitleText(String titleText) {
+        this.titleText.setText(titleText);
     }
 
-    public void setDescriptionText(TextView descriptionText) {
-        this.descriptionText = descriptionText;
+    public void setDescriptionText(String descriptionText) {
+        this.descriptionText.setText(descriptionText);
     }
 
-    public void setTypeText(TextView typeText) {
-        this.typeText = typeText;
+    public void setTypeText(String typeText) {
+        this.typeText.setText(typeText);
     }
 }

@@ -1,10 +1,11 @@
 
 package com.test.ionnt.desafiosolstice.database;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Phone {
+public class Phone implements Serializable {
 
     private String work;
     private String home;

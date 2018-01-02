@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Solstice Challenge</string>
+    <string name="loadingText">Cargando...</string>
+    <string name="errorService">Error obteniendo lista de contactos del servidor, Favor verificar conexion a internet.</string>
+    <string name="mainActivityTitle">Contactos</string>
+    <string name="favoriteTitle">FAVORITOS</string>
+    <string name="otherContactsTitle">OTROS CONTACTOS</string>
+    <string name="phoneText">TELEFONO:</string>
+    <string name="homeText">Casa</string>
+    <string name="mobileText">Mobil</string>
+    <string name="workText">Trabajo</string>
+    <string name="addressText">DIRECCION:</string>
+    <string name="birthdayText">CUMPLEAÑOS:</string>
+    <string name="emailText">EMAIL:</string>
+    <string name="action_bar_detail">Contactos</string>
+</resources>
